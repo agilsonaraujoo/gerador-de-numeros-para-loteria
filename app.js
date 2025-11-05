@@ -3,6 +3,7 @@
   const genBtn = document.getElementById('generate');
   const copyBtn = document.getElementById('copy');
   const clearBtn = document.getElementById('clear');
+  const qtyEl = document.getElementById('qty');
   const resultEl = document.getElementById('result');
 
   const RULES = {
@@ -24,18 +25,31 @@
   }
 
   function render(numbers){
+    // Accepts an array of numbers (single game) or array of arrays (multiple games)
     resultEl.innerHTML = '';
     const frag = document.createDocumentFragment();
-    numbers.forEach(n => {
-      const b = document.createElement('div');
-      b.className = 'badge';
-      b.textContent = String(n).padStart(2, '0');
-      frag.appendChild(b);
+    const isMulti = Array.isArray(numbers[0]);
+    const rows = isMulti ? numbers : [numbers];
+
+    rows.forEach((nums, idx) => {
+      const line = document.createElement('div');
+      line.style.display = 'flex';
+      line.style.flexWrap = 'wrap';
+      line.style.gap = '10px';
+      line.style.marginTop = idx === 0 ? '0' : '10px';
+      nums.forEach(n => {
+        const b = document.createElement('div');
+        b.className = 'badge';
+        b.textContent = String(n).padStart(2, '0');
+        line.appendChild(b);
+      });
+      frag.appendChild(line);
     });
+
     resultEl.appendChild(frag);
     const helper = document.createElement('div');
     helper.className = 'helper';
-    helper.textContent = 'Números gerados em ordem crescente.';
+    helper.textContent = isMulti ? 'Múltiplos jogos em ordem crescente.' : 'Números gerados em ordem crescente.';
     resultEl.appendChild(helper);
   }
 
@@ -44,10 +58,16 @@
   }
 
   function onGenerate(){
-    const nums = generateUniqueNumbers(currentRule());
-    render(nums);
+    const q = Math.max(1, Math.min(10, parseInt(qtyEl && qtyEl.value, 10) || 1));
+    const rule = currentRule();
+    const games = [];
+    for(let i=0;i<q;i++){
+      games.push(generateUniqueNumbers(rule));
+    }
+    render(q === 1 ? games[0] : games);
     copyBtn.disabled = false;
-    copyBtn.dataset.clipboard = nums.join(', ');
+    const lines = games.map(arr => arr.join(', '));
+    copyBtn.dataset.clipboard = lines.join('\n');
     clearBtn.disabled = false;
   }
 
