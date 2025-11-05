@@ -173,6 +173,33 @@
     }
   }
 
+  function applyTheme(mode){
+    const body = document.body;
+    if(mode === 'light'){
+      body.classList.add('light');
+    }else{
+      body.classList.remove('light');
+    }
+    const btn = document.getElementById('theme-toggle');
+    if(btn){
+      btn.textContent = body.classList.contains('light') ? 'Tema escuro' : 'Tema claro';
+    }
+  }
+
+  // Initialize theme from localStorage
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  applyTheme(savedTheme);
+
+  const themeBtn = document.getElementById('theme-toggle');
+  if(themeBtn){
+    themeBtn.addEventListener('click', () => {
+      const isLight = document.body.classList.toggle('light');
+      const mode = isLight ? 'light' : 'dark';
+      localStorage.setItem('theme', mode);
+      applyTheme(mode);
+    });
+  }
+
   genBtn.addEventListener('click', onGenerate);
   copyBtn.addEventListener('click', onCopy);
   clearBtn.addEventListener('click', onClear);
