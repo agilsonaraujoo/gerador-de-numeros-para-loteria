@@ -6,6 +6,7 @@
   const qtyEl = document.getElementById('qty');
   const resultEl = document.getElementById('result');
   const historyEl = document.getElementById('history');
+  const bannedEl = document.getElementById('banned');
 
   const HISTORY_LIMIT = 5;
   const history = [];
@@ -20,10 +21,17 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function generateUniqueNumbers({picks, min, max}){
+  function generateUniqueNumbers({picks, min, max}, bannedSet){
     const set = new Set();
+    const totalAvailable = (max - min + 1) - (bannedSet ? [...bannedSet].filter(n => n>=min && n<=max).length : 0);
+    if(totalAvailable < picks){
+      throw new Error('Quantidade de números disponíveis é menor que a quantidade exigida (verifique banidos).');
+    }
     while(set.size < picks){
-      set.add(randInt(min, max));
+      const n = randInt(min, max);
+      if(!bannedSet || !bannedSet.has(n)){
+        set.add(n);
+      }
     }
     return Array.from(set).sort((a,b) => a - b);
   }
@@ -88,19 +96,30 @@
   function onGenerate(){
     const q = Math.max(1, Math.min(10, parseInt(qtyEl && qtyEl.value, 10) || 1));
     const rule = currentRule();
+    const bannedSet = parseBanned(bannedEl && bannedEl.value);
     const games = [];
-    for(let i=0;i<q;i++){
-      games.push(generateUniqueNumbers(rule));
-    }
-    render(q === 1 ? games[0] : games);
-    copyBtn.disabled = false;
-    copyBtn.dataset.clipboard = formatGames(games);
-    clearBtn.disabled = false;
+    try{
+      for(let i=0;i<q;i++){
+        games.push(generateUniqueNumbers(rule, bannedSet));
+      }
+      render(q === 1 ? games[0] : games);
+      copyBtn.disabled = false;
+      copyBtn.dataset.clipboard = formatGames(games);
+      clearBtn.disabled = false;
 
-    const snapshot = formatGames(games);
-    history.unshift(snapshot);
-    while(history.length > HISTORY_LIMIT) history.pop();
-    renderHistory();
+      const snapshot = formatGames(games);
+      history.unshift(snapshot);
+      while(history.length > HISTORY_LIMIT) history.pop();
+      renderHistory();
+    }catch(e){
+      alert(e.message);
+    }
+  }
+
+  function parseBanned(text){
+    if(!text) return new Set();
+    const nums = text.split(/[,;\s]+/).map(t => parseInt(t, 10)).filter(n => Number.isInteger(n));
+    return new Set(nums);
   }
 
   async function onCopy(){
