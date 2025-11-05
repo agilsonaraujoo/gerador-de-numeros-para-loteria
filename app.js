@@ -177,4 +177,13 @@
   copyBtn.addEventListener('click', onCopy);
   clearBtn.addEventListener('click', onClear);
   if(downloadBtn) downloadBtn.addEventListener('click', onDownload);
+  // Keyboard shortcut: Enter -> Generate
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      if(genBtn && !genBtn.disabled){
+        onGenerate();
+      }
+    }
+  });
 })();
