@@ -4,14 +4,14 @@
   --card: #111827;
   --text: #e5e7eb;
   --muted: #9ca3af;
-  --accent: #10b981;
+  --accent: #0077cc;
 }
 body.light {
   --bg: #f1f5f9;
   --card: #ffffff;
   --text: #0f172a;
   --muted: #475569;
-  --accent: #059669;
+  --accent: #0066cc;
 }
 body {
   margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -29,7 +29,8 @@ button { background: #111827; cursor: pointer; transition: transform .05s ease, 
 button:hover { background: #1f2937; }
 button:active { transform: translateY(1px); }
 button#generate { border-color: #064e3b; background: #064e3b; }
-button#generate:hover { background: #065f46; }
+button#generate { border-color: #034ea6; background: #0366c9; }
+button#generate:hover { background: #0459b8; }
 button[disabled] { opacity: .6; cursor: not-allowed; }
 .result {
   margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;
