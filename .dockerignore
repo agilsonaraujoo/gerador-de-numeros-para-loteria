@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+Dockerfile
+README.md
+LICENSE
+.vscode
+*.md
+*.log
+**/__pycache__
