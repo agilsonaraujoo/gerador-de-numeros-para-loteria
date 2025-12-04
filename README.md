@@ -1,5 +1,23 @@
 # Gerador de Números para Loteria
 
+Pequeno gerador de jogos para modalidades como Mega-Sena, Quina e Lotofácil.
+
+Funcionalidades:
+- Gera jogos aleatórios conforme modalidade selecionada.
+- Permite gerar múltiplos jogos, copiar/baixar resultados e filtrar números banidos.
+
+Como executar localmente
+
+1. Abra o arquivo `index.html` em um navegador moderno.
+2. Use os controles para escolher a modalidade, quantidade de jogos e gerar os números.
+
+Contribuições
+
+Sinta-se à vontade para abrir issues ou pull requests com melhorias de interface, validações adicionais ou exportadores diferentes.
+
+Licença: veja o arquivo `LICENSE`.
+# Gerador de Números para Loteria
+
 Projeto web (HTML/CSS/JS) sem backend.
 
 ## Modalidades
